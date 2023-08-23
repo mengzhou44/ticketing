@@ -1,4 +1,4 @@
-apiVersion:  apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-deployment
@@ -15,3 +15,22 @@ spec:
       containers:
         - name: auth
           image: mengzhou44/auth:latest
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-jwt 
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
