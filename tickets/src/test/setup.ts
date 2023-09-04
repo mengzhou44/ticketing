@@ -3,8 +3,10 @@ import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import jwt from  'jsonwebtoken'
  
+jest.mock('../nats-client');
+
 declare global {
-  var signin: () => string[]
+  var signin: (id?:string) => string[]
 }
 
 let mongo: any
@@ -18,6 +20,8 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
+
+  jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections()
 
   for (let collection of collections) {
@@ -32,10 +36,10 @@ afterAll(async () => {
   await mongoose.connection.close()
 })
 
-global.signin = () => {
+global.signin = (id='1lk24j124l') => {
   // Build a JWT payload.  { id, email }
   const payload = {
-    id: '1lk24j124l',
+    id,
     email: 'test@test.com'
   };
 
