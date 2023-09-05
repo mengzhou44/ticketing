@@ -1,5 +1,5 @@
-import { Subjects, Publisher, TicketUpdatedEvent } from '@easyexpress/common'
+import { Publisher, Subjects, TicketUpdatedEvent } from '@easyexpress/common'
 
 export class TicketUpdatedPublisher extends Publisher<TicketUpdatedEvent> {
-  subject: Subjects.TicketUpdated = Subjects.TicketUpdated
+  readonly subject = Subjects.TicketUpdated
 }

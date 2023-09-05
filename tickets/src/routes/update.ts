@@ -1,15 +1,14 @@
 import express, { Request, Response } from 'express'
+import { body } from 'express-validator'
 import {
-  NotAuthorizedError,
+  validateRequest,
   NotFoundError,
   requireAuth,
-  validateRequest,
+  NotAuthorizedError,
 } from '@easyexpress/common'
 import { Ticket } from '../models/ticket'
-import { body } from 'express-validator'
-
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher'
-import { natsClient } from '../nats-client'
+import { natsWrapper } from '../nats-wrapper'
 
 const router = express.Router()
 
@@ -18,18 +17,15 @@ router.put(
   requireAuth,
   [
     body('title').not().isEmpty().withMessage('Title is required'),
-    body('price').not().isEmpty().withMessage('Price is required'),
     body('price')
       .isFloat({ gt: 0 })
-      .withMessage('Price must be greater than 0'),
+      .withMessage('Price must be provided and must be greater than 0'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const id = req.params.id
-    const ticket = await Ticket.findById(id)
+    const ticket = await Ticket.findById(req.params.id)
 
     if (!ticket) {
-      console.log('step1')
       throw new NotFoundError()
     }
 
@@ -41,19 +37,15 @@ router.put(
       title: req.body.title,
       price: req.body.price,
     })
-
     await ticket.save()
-
-    const publisher = new TicketUpdatedPublisher(natsClient.client)
-
-    await publisher.publish({
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
     })
 
-    res.send({})
+    res.send(ticket)
   }
 )
 
