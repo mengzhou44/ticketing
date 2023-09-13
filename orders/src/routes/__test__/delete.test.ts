@@ -4,11 +4,14 @@ import { app } from '../../app'
 import { Ticket } from '../../models/ticket'
 import { OrderStatus } from '@easyexpress/common'
 import { natsWrapper } from '../../nats-wrapper'
+import mongoose from 'mongoose'
 
 const buildTicket = async () => {
+  const id = new mongoose.Types.ObjectId().toHexString()
   const ticket = Ticket.build({
+    id,
     title: 'concert',
-    price: 20,
+    price: 20
   })
 
   await ticket.save()
