@@ -3,3 +3,5 @@ kubectl rollout restart deployment <deployment-name>
 kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf
 
 kubectl port-forward nats-depl-bc8dcdfd8-nckmj   4222:4222
+
+kubectl create secret generic stripe-secret --from-literal=STRIPE_KEY=sk_test_51Nq5tII91UZg6JD9WVzK1GwIDx755aqPBgQ85qE6ouPomLjuowLhsHapEZBVwiSRg5rZqpPWZBSmMpFnEdsyYkJm0072GzE9iL

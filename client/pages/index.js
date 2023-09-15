@@ -1,12 +1,13 @@
-import React from 'react'
- 
-const Home = () => {
-  return (
-    <div>
-     <h1> Landing Page </h1>
-    </div>
+const LandingPage = ({ currentUser }) => {
+  return currentUser ? (
+    <h1>You are signed in</h1>
+  ) : (
+    <h1>You are NOT signed in</h1>
   )
 }
 
- 
-export default Home
+LandingPage.getInitialProps = async (context, client, currentUser) => {
+  return {}
+}
+
+export default LandingPage
