@@ -9,8 +9,8 @@ export default () => {
     {
       url: '/api/users/signout',
       method: 'post',
-    },
-    () => Router.push('/')
+      onSuccess:   () => Router.push('/')
+    }, 
   )
 
   useEffect(() => {

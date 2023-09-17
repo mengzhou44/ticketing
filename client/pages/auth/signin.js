@@ -11,10 +11,9 @@ export default () => {
     body: {
       email,
       password
-    }
+    },
+    onSuccess: ()=> Router.push('/')
   },
- ()=> Router.push('/')
-  
   );
 
   const onSubmit = async event => {
