@@ -10,36 +10,36 @@ spec:
     - host: www.ticketing-app-calgary.xyz
       http:
         paths:
+          - path: /api/payments/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: payments-srv
+                port:
+                  number: 3000
           - path: /api/users/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: auth-srv
                 port:
                   number: 3000
           - path: /api/tickets/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: tickets-srv
                 port:
                   number: 3000
           - path: /api/orders/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: orders-srv
                 port:
                   number: 3000
-          - path: /api/payments/?(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: payments-srv
-                port:
-                  number: 3000
           - path: /?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: client-srv
@@ -52,7 +52,6 @@ metadata:
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
     service.beta.kubernetes.io/do-loadbalancer-hostname: 'www.ticketing-app-calgary.xyz'
-  labels:
   labels:
     helm.sh/chart: ingress-nginx-2.0.3
     app.kubernetes.io/name: ingress-nginx
